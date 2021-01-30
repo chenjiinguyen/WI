@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="user">
+
+    </div>
+    <div>
+        <input id="value" type="text">
+        <button id="add">Thêm</button>
+    </div>
+    <div id="app">
+
+    </div>
+
+
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-auth.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyBlR9PbbXdBTiNtESCNtHUJgwKFL9dUN0I",
+            authDomain: "wi01-duy.firebaseapp.com",
+            projectId: "wi01-duy",
+            storageBucket: "wi01-duy.appspot.com",
+            messagingSenderId: "613169758400",
+            appId: "1:613169758400:web:df6c3ed822eb68de4cad25"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        let db = firebase.firestore();
+        let auth = firebase.auth();
+        let userDOM = document.getElementById("user")
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in, see docs for a list of available properties
+                // https://firebase.google.com/docs/reference/js/firebase.User
+                var email = user.email;
+                
+                userDOM.innerHTML = "Xin Chào "+ email + `<button onclick="signOut()">Đăng Xuất</button>`;
+            } else {
+                // User is signed out
+                // ...
+                userDOM.innerHTML = "<button>Đăng Nhập</button>";
+            }
+        });
+
+
+        let addBtn = document.getElementById('add')
+
+        function signOut(){
+            auth.signOut().then(() => {
+                alert("Sign-out successful.")
+            }).catch((error) => {
+                alert(error)
+            });
+
+        }
+
+        function GenerateArray() {
+            // Tạo DOM cho ul
+            list = document.createElement('ul')
+
+            db.collection("todo").get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    // Tạo DOM cho từng phần tử li
+                    let li = document.createElement('li')
+                    // Gán giá trị cho từng phần tử tương ứng
+                    li.innerHTML = `<span style="margin-right:10px;">
+                                    ${doc.data().value}
+                                </span>
+                                <button data-index="${doc.id}" class="delete">
+                                    Xóa
+                                </button>`
+                    // Thêm li vào list
+                    list.appendChild(li)
+                });
+
+                // Lấy DOM của element app
+                var app = document.getElementById('app')
+                // Xóa tất cả phần tử trong app
+                app.innerHTML = ""
+                // Gán giá trị list vào trong app
+                app.appendChild(list);
+
+                // Xóa giá trị
+                let delBtns = document.getElementsByClassName('delete')
+                for (let i = 0; i < delBtns.length; i++) {
+                    delBtns[i].addEventListener('click', function () {
+                        let id = this.getAttribute("data-index")
+                        db.collection("todo").doc(id).delete().then(function () {
+                            console.log("Document successfully deleted!");
+                        }).catch(function (error) {
+                            console.error("Error removing document: ", error);
+                        });
+                        GenerateArray()
+                    })
+                }
+            });
+
+
+        }
+
+        GenerateArray()
+
+        addBtn.addEventListener('click', function () {
+            input = document.getElementById('value')
+            db.collection("todo").add({
+                value: input.value
+            })
+                .then(function (docRef) {
+                    console.log("Document written with ID: ", docRef.id);
+                })
+                .catch(function (error) {
+                    console.error("Error adding document: ", error);
+                });
+            GenerateArray()
+            input.value = ""
+        })
+
+    </script>
+</body>
+
+</html>

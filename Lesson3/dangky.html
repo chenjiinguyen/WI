@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+        <input type="email">
+        <input type="password">
+        <button id="submit">Đăng Ký</button>
+
+
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-auth.js"></script>
+    
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+            https://firebase.google.com/docs/web/setup#available-libraries -->
+    
+        <script>
+            // Your web app's Firebase configuration
+            var firebaseConfig = {
+                apiKey: "AIzaSyBlR9PbbXdBTiNtESCNtHUJgwKFL9dUN0I",
+                authDomain: "wi01-duy.firebaseapp.com",
+                projectId: "wi01-duy",
+                storageBucket: "wi01-duy.appspot.com",
+                messagingSenderId: "613169758400",
+                appId: "1:613169758400:web:df6c3ed822eb68de4cad25"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+    
+            let auth = firebase.auth();
+
+            let email = document.
+
+            auth.createUserWithEmailAndPassword(email, password)
+  .then((userCredential) => {
+    // Signed in 
+    var user = userCredential.user;
+    // ...
+  })
+  .catch((error) => {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    // ..
+  });
+        </script>
+</body>
+</html>

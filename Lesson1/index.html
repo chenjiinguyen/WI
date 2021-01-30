@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <input id="value" type="text">
+        <button id="add">Thêm</button>
+    </div>
+    <div id="app">
+
+    </div>
+</body>
+<script>
+    let addBtn = document.getElementById('add')
+    
+    // Danh Sách Dữ Liệu
+    let arr = ["Nguyễn Văn A", "Trần Văn B", "Phạm Trung C"]
+
+    function GenerateArray() {
+        // Tạo DOM cho ul
+        list = document.createElement('ul')
+
+        for (let i = 0; i < arr.length; i++) {
+            // Tạo DOM cho từng phần tử li
+            let li = document.createElement('li')
+            // Gán giá trị cho từng phần tử tương ứng
+            li.innerHTML = `<span style="margin-right:10px;">
+                                ${arr[i]}
+                            </span>
+                            <button data-index="${i}" class="delete">
+                                Xóa
+                            </button>`
+            // Thêm li vào list
+            list.appendChild(li)
+        }
+
+        // Lấy DOM của element app
+        var app = document.getElementById('app')
+        // Xóa tất cả phần tử trong app
+        app.innerHTML = ""
+        // Gán giá trị list vào trong app
+        app.appendChild(list);
+
+        // Xóa giá trị
+        let delBtns = document.getElementsByClassName('delete')
+        for (let i = 0; i < delBtns.length; i++) {
+            delBtns[i].addEventListener('click',function(){
+                let id = this.getAttribute("data-index")
+                arr.splice(id,1)
+                GenerateArray()
+            })
+        }
+    }
+
+    GenerateArray()
+
+    addBtn.addEventListener('click',function(){
+        input = document.getElementById('value')
+        arr.push(input.value)
+        GenerateArray()
+        input.value = ""
+    })
+
+    
+
+</script>
+
+</html>
