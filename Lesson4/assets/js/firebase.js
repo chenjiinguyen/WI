@@ -12,3 +12,4 @@ firebase.initializeApp(firebaseConfig);
 
 let auth = firebase.auth();
 let db = firebase.firestore();
+let storage = firebase.storage();
