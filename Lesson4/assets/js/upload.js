@@ -16,8 +16,8 @@ uploadBtn.addEventListener("click",function(){
                     console.log('Uploaded a blob or file!');
                     imagesRef.getDownloadURL()
                     .then((url) => {
-                        db.collection("users").where("email","==",user.email).limit(1).get().then((snapshot) => {
-                            snapshot.forEach((doc)=> {
+                        db.collection("users").doc(user.uid).get().then((doc) => {
+
                                 let newData = {...doc.data()};
                                 newData.avatar = url;
                                 db.collection("users").doc(doc.id).set(newData)
@@ -27,7 +27,7 @@ uploadBtn.addEventListener("click",function(){
                                 .catch((error) => {
                                     console.error("Error writing document: ", error);
                                 });
-                            })
+                            
                         })
                            
                        
